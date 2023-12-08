@@ -106,4 +106,26 @@ export const routes = [
       return res.writeHead(404).end(JSON.stringify(message));
     },
   },
+  {
+    method: "PATCH",
+    path: buildRoutePath("/tasks/:id/complete"),
+    handler: (req, res) => {
+      const { id } = req.params;
+
+      if (database.findById("tasks", id) > -1) {
+        const data = {
+          completed_at: new Date(),
+          updated_at: new Date(),
+        };
+        database.update("tasks", id, data);
+        return res.writeHead(204).end();
+      }
+
+      const message = {
+        message: "Couldn't find task",
+      };
+
+      return res.writeHead(404).end(JSON.stringify(message));
+    },
+  },
 ];
