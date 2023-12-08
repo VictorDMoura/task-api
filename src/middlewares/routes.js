@@ -57,5 +57,22 @@ export const routes = [
         .end(JSON.stringify(filterTasks));
     },
   },
-  {},
+  {
+    method: "DELETE",
+    path: buildRoutePath("/tasks/:id"),
+    handler: (req, res) => {
+      const { id } = req.params;
+
+      if (database.findById("tasks", id) > -1) {
+        database.delete("tasks", id);
+        return res.writeHead(204).end();
+      }
+
+      const message = {
+        message: "Couldn't find task",
+      };
+
+      return res.writeHead(404).end(JSON.stringify(message));
+    },
+  },
 ];
